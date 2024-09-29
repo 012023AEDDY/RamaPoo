@@ -40,6 +40,11 @@ public class CalcControl {
     TableColumn<calcTO, Void>cOpc;
     private ObservableList<calcTO> calcTOList;
     private int indexEdit=-1;
+    @FXML
+    public void initialize(){
+        listaOper();
+    }
+    int t=0;
 
     @FXML
     public void accionButton(ActionEvent event){
