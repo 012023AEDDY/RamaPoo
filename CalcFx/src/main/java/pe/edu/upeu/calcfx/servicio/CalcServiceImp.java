@@ -22,10 +22,10 @@ public class CalcServiceImp  implements calcServivio{
 
     @Override
     public void actualizarResultado(calcTO to, int index) {
-       // dbOper.set(index, to);
+        dbOper.actualizar(to, index);
     }
     @Override
     public void eliminarResultado(int index) {
-        //dbOper.remove(index);
+        dbOper.eliminar(index);
     }
 }

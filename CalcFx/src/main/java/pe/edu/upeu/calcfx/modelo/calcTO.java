@@ -1,6 +1,7 @@
 package pe.edu.upeu.calcfx.modelo;// esta clase va llamar o "importar" en la INTERFACE
 
 public class calcTO {
+    int id;
     String num1;
     String num2;
     char operador;
@@ -38,6 +39,10 @@ public class calcTO {
         this.resultado = resultado;
     }
 
+
+    public int getId() {return id;}
+
+    public void setId(int id) {this.id = id;}
 
     @Override
     public String toString() {
