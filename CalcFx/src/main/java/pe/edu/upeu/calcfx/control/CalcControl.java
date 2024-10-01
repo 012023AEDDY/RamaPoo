@@ -83,12 +83,13 @@ public class CalcControl {
         }
 
         calcTO to=new calcTO();
+        to.setId(Long.parseLong(String.valueOf(indexEdit)));
         to.setNum1(String.valueOf(val1));
         to.setNum2(String.valueOf(val2));
         to.setOperador(valores[1].charAt(0));
         to.setResultado(String.valueOf(txtResultado.getText()));
         if(indexEdit!=-1){
-            serviceI.actualizarResultado(to, indexEdit);
+            serviceI.actualizarResultado(to, to.getId());
         }else{
             serviceI.guardarResultados(to);
         }
@@ -97,12 +98,12 @@ public class CalcControl {
 
     }
     // Acción para editar una operación CRUD
-    private void editOperCalc(calcTO cal, int index) {
+    private void editOperCalc(calcTO cal, Long index) {
         System.out.println("Editing: " + cal.getNum1() + " Index:"+index);
         txtResultado.setText(cal.getNum1()+" "+cal.getOperador()+" "+cal.getNum2());
-                indexEdit=index;
+                indexEdit=index.intValue();
     }
-    private void deleteOperCalc(calcTO cal, int index) {//elimina y refresq ue el reporte
+    private void deleteOperCalc(calcTO cal, Long index) {//elimina y refresq ue el reporte
         System.out.println("Deleting: " + cal.getNum2());
         serviceI.eliminarResultado(index);
         listaOper();
@@ -117,12 +118,12 @@ public class CalcControl {
                 editButton.getStyleClass().setAll("btn", "btn-success");//color de boton
                 editButton.setOnAction(event -> {
                     calcTO cal = getTableView().getItems().get(getIndex());
-                    editOperCalc(cal, getIndex());
+                    editOperCalc(cal, cal.getId());
                 });
                 deleteButton.getStyleClass().setAll("btn", "btn-danger");//color de boton
                 deleteButton.setOnAction(event -> {
                     calcTO cal = getTableView().getItems().get(getIndex());
-                    deleteOperCalc(cal, getIndex());
+                    deleteOperCalc(cal, cal.getId());
                 });
             }
             @Override

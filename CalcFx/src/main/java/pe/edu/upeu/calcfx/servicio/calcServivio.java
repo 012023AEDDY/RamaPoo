@@ -8,6 +8,6 @@ public interface calcServivio {
 
     public void guardarResultados(calcTO to);
     public List<calcTO> obtenerResultado();
-    public void actualizarResultado(calcTO to, int index);
-    public void eliminarResultado(int index);
+    public void actualizarResultado(calcTO to, Long index);
+    public void eliminarResultado(Long index);
 }

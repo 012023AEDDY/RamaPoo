@@ -1,42 +1,23 @@
 package pe.edu.upeu.calcfx.modelo;// esta clase va llamar o "importar" en la INTERFACE
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data//genera los get and sseter
+@AllArgsConstructor// depende de los atributos que tengamos
+@NoArgsConstructor// constructor sin parametros de entrada
+@Entity//indicará el id y tambien hará autoincremento de los id en base de datos
+@Table(name = "calculadora")// para sobre nombre y no poner calTO sino calculadora
 public class calcTO {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//solito va incrementar
+     @Id
+    Long id;
     String num1;
     String num2;
     char operador;
     String resultado;
-
-    public String getNum1() {
-        return num1;
-    }
-
-    public void setNum1(String num1) {
-        this.num1 = num1;
-    }
-
-    public String getNum2() {
-        return num2;
-    }
-
-    public void setNum2(String num2) {
-        this.num2 = num2;
-    }
-
-    public char getOperador() {
-        return operador;
-    }
-
-    public void setOperador(char operador) {
-        this.operador = operador;
-    }
-
-    public String getResultado() {
-        return resultado;
-    }
-
-    public void setResultado(String resultado) {
-        this.resultado = resultado;
-    }
 
 
     @Override
