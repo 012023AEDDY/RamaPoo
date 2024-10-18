@@ -2,56 +2,46 @@ package pe.edu.upeu.sysalmacenfx.servicio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pe.edu.upeu.sysalmacenfx.dto.ComboBoxOption;
 import pe.edu.upeu.sysalmacenfx.modelo.Cliente;
 import pe.edu.upeu.sysalmacenfx.repositorio.ClienteRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClienteService {
+
     @Autowired
-    ClienteRepository service;
+    ClienteRepository repo;
+
     public Cliente save(Cliente to) {
-        return service.save(to);
+        return repo.save(to);
     }
 
     public List<Cliente> list() {
-        return service.findAll();
+        return repo.findAll();
     }
 
-    public Optional<Cliente> update(Long id, String nuevoNombre) {
-        Optional<Cliente> optionalCliente = service.findById(id);
-        if (optionalCliente.isPresent()) {
-            Cliente client = optionalCliente.get();
-            client.setNombres(nuevoNombre);
-            return Optional.of(service.save(client));
+    // Actualizar un cliente por ID
+    public Cliente update(Cliente to, String dniruc) {
+        try {
+            Cliente toe = repo.findById(dniruc).orElse(null);
+            if (toe != null) {
+                toe.setNombres(to.getNombres());
+                return repo.save(toe);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
-        return Optional.empty();
+        return null;
     }
 
-    public void delete(Long id) {
-        service.deleteById(id);
+
+    public void delete(String dniruc) {
+        repo.deleteById(dniruc);
     }
 
-    public void deleteAll() {
-        service.deleteAll();
-    }
 
-    public Optional<Cliente> buscarId(Long id) {
-        return service.findById(id);
-    }
-
-    public List
-            <ComboBoxOption> listarCombobox(){
-        List<ComboBoxOption> listar =new ArrayList<>();//instanciando y listar UN OBJETO
-        for
-        (Cliente cate : service.findAll()) {
-            listar.add(new ComboBoxOption(String.valueOf(cate.getIdCliente()), cate.getNombres()));
-        }
-        return listar;
+    public Cliente searchById(String dniruc) {
+        return repo.findById(dniruc).orElse(null);
     }
 }
-

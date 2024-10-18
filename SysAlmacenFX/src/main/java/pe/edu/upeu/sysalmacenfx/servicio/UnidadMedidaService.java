@@ -3,57 +3,58 @@ package pe.edu.upeu.sysalmacenfx.servicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.edu.upeu.sysalmacenfx.dto.ComboBoxOption;
+import pe.edu.upeu.sysalmacenfx.modelo.Marca;
 import pe.edu.upeu.sysalmacenfx.modelo.UnidadMedida;
 import pe.edu.upeu.sysalmacenfx.repositorio.UnidadMedidaRepository;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UnidadMedidaService {
+
+
     @Autowired
     UnidadMedidaRepository repo;
-    public UnidadMedida save(UnidadMedida to) {
+    public UnidadMedida save(UnidadMedida to){
         return repo.save(to);
     }
-
-    public List<UnidadMedida> list() {
+    public List<UnidadMedida> list(){
         return repo.findAll();
     }
-
-    public Optional<UnidadMedida> update(Long id, String nuevoNombre) {
-        Optional<UnidadMedida> optionalCategoria = repo.findById(id);
-        if (optionalCategoria.isPresent()) {
-            UnidadMedida nombremedida = optionalCategoria.get();
-            nombremedida.setNombreMedida(nuevoNombre);
-            return Optional.of(repo.save(nombremedida));
+    public UnidadMedida update(UnidadMedida to, Long id){
+        try {
+            UnidadMedida toe=repo.findById(id).get();
+            if(toe!=null){
+                toe.setNombreMedida(to.getNombreMedida());
+            }
+            return repo.save(toe);
+        }catch (Exception e){
+            System.out.println("Error: "+ e.getMessage());
         }
-        return Optional.empty();
+        return null;
     }
 
-    public void delete(Long id) {
+    public UnidadMedida update(UnidadMedida to){
+        return repo.save(to);
+    }
+    public void delete(Long id){
         repo.deleteById(id);
     }
-
-    public void deleteAll() {
-        repo.deleteAll();
+    public UnidadMedida searchById(Long id){
+        return repo.findById(id).get();
     }
 
-    public Optional<UnidadMedida> buscarId(Long id) {
-        return repo.findById(id);
-    }
 
-    public List
-            <ComboBoxOption> listarCombobox(){
-        List<ComboBoxOption> listar =new ArrayList<>();//instanciando y listar UN OBJETO
-        for
-        (UnidadMedida cate : repo.findAll()) {
-            listar.add(new ComboBoxOption(String.valueOf(cate.getIdUnidad()),
-                    cate.getNombreMedida()));
-
+    public List<ComboBoxOption> listarCombobox(){
+        List<ComboBoxOption> listar=new ArrayList<>();
+        ComboBoxOption cb;
+        for(UnidadMedida cate : repo.findAll()) {
+            cb=new ComboBoxOption();
+            cb.setKey(String.valueOf(cate.getIdUnidad()));
+            cb.setValue(cate.getNombreMedida());
+            listar.add(cb);
         }
         return listar;
-
     }
 }
-

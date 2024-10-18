@@ -8,58 +8,61 @@ import pe.edu.upeu.sysalmacenfx.repositorio.CategoriaRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoriaService {
-    @Autowired // inyeccion de dependencias por atibutos
+
+    @Autowired
     CategoriaRepository repo;
-    //CategoriaRepository repo=new CategoriaRepository() no se puede hacer esto
-//C
-    public Categoria save(Categoria to) {
+
+    //C
+    public Categoria save(Categoria to){
+    return repo.save(to);
+    }
+
+    //R
+    public List<Categoria> list(){
+        return repo.findAll();
+    }
+    //U
+    public Categoria update(Categoria to, Long id){
+        try {
+            Categoria toe=repo.findById(id).get();
+            if(toe!=null){
+                toe.setNombre(to.getNombre());
+            }
+            return repo.save(toe);
+        }catch (Exception e){
+            System.out.println("Error: "+ e.getMessage());
+        }
+        return null;
+    }
+
+    public Categoria update(Categoria to){
         return repo.save(to);
     }
 
-    public List<Categoria> list() {
-        return repo.findAll();
-    }
-
-    public Optional<Categoria> update(Long id, String nuevoNombre) {
-        Optional<Categoria> optionalCategoria = repo.findById(id);
-        if (optionalCategoria.isPresent()) {
-            Categoria categoria = optionalCategoria.get();
-            categoria.setNombre(nuevoNombre);
-            return Optional.of(repo.save(categoria));
-        }
-        return Optional.empty();
-    }
-
-    public void delete(Long id) {
+    //D
+    public void delete(Long id){
         repo.deleteById(id);
     }
-
-    public void deleteAll() {
-        repo.deleteAll();
+    //B
+    public Categoria searchById(Long id){
+        return repo.findById(id).get();
     }
 
-    public Optional<Categoria> buscarId(Long id) {
-        return repo.findById(id);
-    }
 
-    public List
-            <ComboBoxOption> listarCombobox(){
-        List<ComboBoxOption> listar =new ArrayList<>();//instanciando y listar UN OBJETO
-        for
-        (Categoria cate : repo.findAll()) {
-            listar.add(new ComboBoxOption(String.valueOf(cate.getIdCategoria()),
-                    cate.getNombre()));
-
+    public List<ComboBoxOption> listarCombobox(){
+        List<ComboBoxOption> listar=new ArrayList<>();
+        ComboBoxOption cb;
+        for(Categoria cate : repo.findAll()) {
+            cb=new ComboBoxOption();
+            cb.setKey(String.valueOf(cate.getIdCategoria()));
+            cb.setValue(cate.getNombre());
+            listar.add(cb);
         }
         return listar;
-
     }
+
+
 }
-
-
-
-

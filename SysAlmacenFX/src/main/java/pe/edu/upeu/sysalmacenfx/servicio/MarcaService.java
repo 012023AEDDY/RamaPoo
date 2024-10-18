@@ -9,54 +9,50 @@ import pe.edu.upeu.sysalmacenfx.repositorio.MarcaRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MarcaService {
-    @Autowired // inyeccion de dependencias por atibutos
+
+    @Autowired
     MarcaRepository repo;
-    //CategoriaRepository repo=new CategoriaRepository() no se puede hacer esto
-//C
-    public Marca save(Marca to) {
+    public Marca save(Marca to){
         return repo.save(to);
     }
-
-    public List<Marca> list() {
+    public List<Marca> list(){
         return repo.findAll();
     }
-
-    public Optional<Marca> update(Long id, String nuevoNombre) {
-        Optional<Marca> optionalMarca = repo.findById(id);
-        if (optionalMarca.isPresent()) {
-            Marca marca = optionalMarca.get();
-            marca.setNombre(nuevoNombre);
-            return Optional.of(repo.save(marca));
+    public Marca update(Marca to, Long id){
+        try {
+            Marca toe=repo.findById(id).get();
+            if(toe!=null){
+                toe.setNombre(to.getNombre());
+            }
+            return repo.save(toe);
+        }catch (Exception e){
+            System.out.println("Error: "+ e.getMessage());
         }
-        return Optional.empty();
+        return null;
     }
 
-    public void delete(Long id) {
+    public Marca update(Marca to){
+        return repo.save(to);
+    }
+    public void delete(Long id){
         repo.deleteById(id);
     }
-
-    public void deleteAll() {
-        repo.deleteAll();
+    public Marca searchById(Long id){
+        return repo.findById(id).get();
     }
 
-    public Optional<Marca> buscarId(Long id) {
-        return repo.findById(id);
-    }
-
-    public List
-            <ComboBoxOption> listarCombobox(){
-        List<ComboBoxOption> listar =new ArrayList<>();//instanciando y listar UN OBJETO
-        for
-        (Marca cate : repo.findAll()) {
-            listar.add(new ComboBoxOption(String.valueOf(cate.getIdMarca()),
-                    cate.getNombre()));
-
+    public List<ComboBoxOption> listarCombobox(){
+        List<ComboBoxOption> listar=new ArrayList<>();
+        ComboBoxOption cb;
+        for(Marca cate : repo.findAll()) {
+            cb=new ComboBoxOption();
+            cb.setKey(String.valueOf(cate.getIdMarca()));
+            cb.setValue(cate.getNombre());
+            listar.add(cb);
         }
         return listar;
-
     }
 }
