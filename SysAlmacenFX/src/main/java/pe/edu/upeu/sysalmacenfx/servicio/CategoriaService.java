@@ -47,8 +47,7 @@ public class CategoriaService {
         repo.deleteById(id);
     }
     //B
-    public Categoria searchById(Long id){
-        return repo.findById(id).get();
+    public Categoria searchById(Long id){return repo.findById(id).orElse(null);
     }
 
 
